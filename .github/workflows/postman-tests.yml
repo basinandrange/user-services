@@ -3,6 +3,7 @@ name: Postman collection tests
 on:
   push:
   pull_request:
+  workflow_dispatch:
 
 jobs:
   run-postman-collection:
