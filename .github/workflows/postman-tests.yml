@@ -33,4 +33,4 @@ jobs:
       - name: Run collection (filesystem mode)
         shell: bash
         run: |
-          postman collection run "postman/collections/NOVA New User Onboarding"
+          postman collection run "postman/collections/NOVA New User Onboarding" -e "postman/environments/Prod.environment.yaml" --report-events

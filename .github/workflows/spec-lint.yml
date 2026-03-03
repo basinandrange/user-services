@@ -32,4 +32,4 @@ jobs:
       - name: lint spec  (filesystem mode)
         shell: bash
         run: |
-          postman spec lint "index.yaml"
+          postman spec lint "index.yaml" --report-events
