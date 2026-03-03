@@ -5,12 +5,12 @@ workspace:
 # Each entry here maps a local resource to one or more corresponding objects in Postman Cloud
 cloudResources:
   collections:
-    ../postman/collections/NOVA Security API: 23889826-107badaa-19f4-4a81-bd13-7b2e28531f94
     ../postman/collections/NOVA New User Onboarding: 23889826-74f02a56-01e0-4d8d-a4ba-d1e2b6e00e65
     ../postman/collections/NOVA Security User Management: 23889826-7f90a41a-a5f7-48e7-968c-2f01f94d94e5
+    ../postman/collections/NOVA Security API: 23889826-107badaa-19f4-4a81-bd13-7b2e28531f94
+  specs:
+    ../index.yaml: 8e66f2d8-8533-4d84-af03-092a274ecd53
 
-# All resources in the `postman/` folder are automatically registered in Local View.
-# Point to additional files outside the `postman/` folder to register them individually. Example:
-#localResources:
-#  collections:
-#    - ../tests/E2E Test Collection/
+localResources:
+  specs:
+    - ../index.yaml

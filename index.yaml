@@ -1,0 +1,746 @@
+openapi: 3.0.0
+info:
+  title: NOVA New User Onboarding
+  version: 1.0.0
+  description: ''
+servers:
+  - url: https://1af308f9-67f8-48f5-98ca-a8fd97bcaae8.mock.pstmn.io
+paths:
+  /accounts/{accountNumber}/statement/latest:
+    get:
+      summary: Latest
+      responses:
+        '200':
+          description: Untitled Example
+          content:
+            application/json:
+              schema:
+                type: string
+                format: style
+              example: |-
+                {
+                    "period": "latest",
+                    "balance": {
+                        "opening": 592.00,
+                        "closing": 850.86
+                    },
+                    "money": {
+                        "in": 738.29,
+                        "out": 166.95
+                    },
+                    "transactions": [
+                        {
+                            "date": "Tue Nov 02 2021 03:12:59 GMT-0400 (Eastern Daylight Time)",
+                            "description": "Schroeder LLC",
+                            "type": "invoice",
+                            "amount": 472.23,
+                            "balance": 975.82
+                        },
+                        {
+                            "date": "Tue Nov 02 2021 07:25:47 GMT-0400 (Eastern Daylight Time)",
+                            "description": "Douglas LLC",
+                            "type": "withdrawal",
+                            "amount": 579.54,
+                            "balance": 478.19
+                        },
+                        {
+                            "date": "Tue Nov 02 2021 03:15:25 GMT-0400 (Eastern Daylight Time)",
+                            "description": "Schimmel, Veum and Ernser",
+                            "type": "payment",
+                            "amount": 183.96,
+                            "balance": 930.73
+                        },
+                        {
+                            "date": "Tue Nov 02 2021 10:23:17 GMT-0400 (Eastern Daylight Time)",
+                            "description": "Haley, Gislason and Yundt",
+                            "type": "invoice",
+                            "amount": 41.48,
+                            "balance": 725.33
+                        },
+                        {
+                            "date": "Mon Nov 01 2021 22:39:10 GMT-0400 (Eastern Daylight Time)",
+                            "description": "Harris, Hegmann and Sawayn",
+                            "type": "deposit",
+                            "amount": 879.64,
+                            "balance": 646.98
+                        },
+                        {
+                            "date": "Tue Nov 02 2021 01:31:45 GMT-0400 (Eastern Daylight Time)",
+                            "description": "Jacobson, Monahan and Roberts",
+                            "type": "withdrawal",
+                            "amount": 582.72,
+                            "balance": 849.03
+                        },
+                        {
+                            "date": "Tue Nov 02 2021 19:06:42 GMT-0400 (Eastern Daylight Time)",
+                            "description": "Vandervort Group",
+                            "type": "invoice",
+                            "amount": 12.65,
+                            "balance": 522.66
+                        },
+                        {
+                            "date": "Tue Nov 02 2021 03:08:30 GMT-0400 (Eastern Daylight Time)",
+                            "description": "Smitham LLC",
+                            "type": "withdrawal",
+                            "amount": 279.13,
+                            "balance": 781.56
+                        },
+                        {
+                            "date": "Tue Nov 02 2021 03:46:15 GMT-0400 (Eastern Daylight Time)",
+                            "description": "Moore LLC",
+                            "type": "withdrawal",
+                            "amount": 723.63,
+                            "balance": 544.53
+                        },
+                        {
+                            "date": "Tue Nov 02 2021 04:53:24 GMT-0400 (Eastern Daylight Time)",
+                            "description": "Predovic - Ferry",
+                            "type": "invoice",
+                            "amount": 673.55,
+                            "balance": 638.57
+                        }
+                    ]
+                }
+      tags:
+        - accounts
+        - '{account Number}'
+        - statement
+    parameters:
+      - name: accountNumber
+        in: path
+        required: true
+        description: '(Required) '
+        schema:
+          type: string
+        example: do pariatur fugiat esse
+  /accounts/{accountNumber}/statement/date:
+    get:
+      summary: Date
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+            Transfer-Encoding:
+              schema:
+                type: string
+            Connection:
+              schema:
+                type: string
+            Server:
+              schema:
+                type: string
+            x-srv-trace:
+              schema:
+                type: string
+            x-srv-span:
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            X-RateLimit-Limit:
+              schema:
+                type: string
+            X-RateLimit-Remaining:
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: string
+            ETag:
+              schema:
+                type: string
+            Vary:
+              schema:
+                type: string
+            Content-Encoding:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: string
+                format: style
+              example: |-
+                {
+                    "period": {
+                        "from": "Mon Sep 20 2021 16:52:45 GMT-0400 (Eastern Daylight Time)",
+                        "to": "Tue Nov 02 2021 15:13:01 GMT-0400 (Eastern Daylight Time)"
+                    },
+                    "balance": {
+                        "opening": 852.93,
+                        "closing": 659.37
+                    },
+                    "money": {
+                        "in": 162.03,
+                        "out": 416.14
+                    },
+                    "transactions": [
+                        {
+                            "date": "Mon Nov 01 2021 21:22:46 GMT-0400 (Eastern Daylight Time)",
+                            "description": "Rutherford, Kuhn and Davis",
+                            "type": "payment",
+                            "amount": 550.45,
+                            "balance": 812.41
+                        },
+                        {
+                            "date": "Tue Nov 02 2021 17:54:35 GMT-0400 (Eastern Daylight Time)",
+                            "description": "Steuber, Bosco and Aufderhar",
+                            "type": "withdrawal",
+                            "amount": 352.28,
+                            "balance": 805.94
+                        },
+                        {
+                            "date": "Tue Nov 02 2021 00:32:22 GMT-0400 (Eastern Daylight Time)",
+                            "description": "Murray, Lind and Conn",
+                            "type": "withdrawal",
+                            "amount": 750.29,
+                            "balance": 380.53
+                        },
+                        {
+                            "date": "Tue Nov 02 2021 16:08:41 GMT-0400 (Eastern Daylight Time)",
+                            "description": "Ortiz - Strosin",
+                            "type": "withdrawal",
+                            "amount": 907.48,
+                            "balance": 911.39
+                        },
+                        {
+                            "date": "Tue Nov 02 2021 01:54:43 GMT-0400 (Eastern Daylight Time)",
+                            "description": "Lockman - Abbott",
+                            "type": "withdrawal",
+                            "amount": 488.83,
+                            "balance": 27.05
+                        },
+                        {
+                            "date": "Tue Nov 02 2021 20:56:06 GMT-0400 (Eastern Daylight Time)",
+                            "description": "Thiel, Labadie and Fay",
+                            "type": "withdrawal",
+                            "amount": 699.06,
+                            "balance": 494.85
+                        },
+                        {
+                            "date": "Tue Nov 02 2021 01:03:02 GMT-0400 (Eastern Daylight Time)",
+                            "description": "Mosciski - Rutherford",
+                            "type": "invoice",
+                            "amount": 709.30,
+                            "balance": 280.79
+                        },
+                        {
+                            "date": "Tue Nov 02 2021 06:03:08 GMT-0400 (Eastern Daylight Time)",
+                            "description": "Gaylord and Sons",
+                            "type": "deposit",
+                            "amount": 948.75,
+                            "balance": 410.76
+                        },
+                        {
+                            "date": "Tue Nov 02 2021 11:01:22 GMT-0400 (Eastern Daylight Time)",
+                            "description": "Heaney LLC",
+                            "type": "withdrawal",
+                            "amount": 226.07,
+                            "balance": 562.89
+                        },
+                        {
+                            "date": "Tue Nov 02 2021 05:15:39 GMT-0400 (Eastern Daylight Time)",
+                            "description": "Torphy Inc",
+                            "type": "payment",
+                            "amount": 848.31,
+                            "balance": 402.62
+                        }
+                    ]
+                }
+      tags:
+        - accounts
+        - '{account Number}'
+        - statement
+    parameters:
+      - name: accountNumber
+        in: path
+        required: true
+        description: '(Required) '
+        schema:
+          type: string
+        example: do pariatur fugiat esse
+  /accounts/{accountNumber}/overview:
+    get:
+      summary: Overview
+      responses:
+        '200':
+          description: Untitled Example
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |-
+                {
+                    "type": "Personal Loan Account",
+                    "balance": {
+                        "available": 632.22,
+                        "present": 339.71
+                    },
+                    "details": {
+                        "domestic": {
+                            "account": "49114539",
+                            "routing": "11252386"
+                        },
+                        "international": {
+                            "bic": "GBHULVJ1",
+                            "iban": "CH8572759176K0032S830"
+                        }
+                    },
+                    "interestRate": 0.01,
+                    "lastStatementDate": "Tue Nov 02 2021 10:12:14 GMT-0400 (Eastern Daylight Time)"
+                }
+      tags:
+        - accounts
+        - '{account Number}'
+    parameters:
+      - name: accountNumber
+        in: path
+        required: true
+        description: '(Required) '
+        schema:
+          type: string
+        example: do pariatur fugiat esse
+  /accounts/create:
+    post:
+      summary: Create
+      responses:
+        '201':
+          description: Untitled Example
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  details:
+                    type: object
+                    properties:
+                      domestic:
+                        type: object
+                        properties:
+                          account:
+                            type: string
+                            format: utc-millisec
+                          routing:
+                            type: string
+                            format: utc-millisec
+                      international:
+                        type: object
+                        properties:
+                          bic:
+                            type: string
+                          iban:
+                            type: string
+              example:
+                type: Savings Account
+                details:
+                  domestic:
+                    account: '16088994'
+                    routing: '84768721'
+                  international:
+                    bic: RLOOLSY1
+                    iban: LB417006B8554854OI3499112308
+      tags:
+        - accounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                holder:
+                  type: string
+            example:
+              type: Checking Account
+              holder: '{{customerId}}'
+  /payments/{accountNumber}/payees:
+    get:
+      summary: List
+      responses:
+        '500':
+          description: Untitled Example
+          content:
+            application/json:
+              schema:
+                type: string
+                format: style
+              example: |-
+                [
+                    {
+                        "name": "Alejandro Reichert",
+                        "checking": 49519513,
+                        "routing": 41858408
+                    },
+                    {
+                        "name": "Sandy Funk",
+                        "checking": 89056703,
+                        "routing": 49713129
+                    },
+                    {
+                        "name": "Aaron Metz",
+                        "checking": 09806437,
+                        "routing": 55100334
+                    },
+                    {
+                        "name": "Darrell Bauch",
+                        "checking": 85125097,
+                        "routing": 09173516
+                    },
+                    {
+                        "name": "Isaac Feil",
+                        "checking": 20270828,
+                        "routing": 35365127
+                    },
+                    {
+                        "name": "Leigh Rohan",
+                        "checking": 90142633,
+                        "routing": 00431026
+                    },
+                    {
+                        "name": "Melody Ryan",
+                        "checking": 43478216,
+                        "routing": 23899846
+                    },
+                    {
+                        "name": "Howard Gorczany",
+                        "checking": 22511905,
+                        "routing": 01385400
+                    },
+                    {
+                        "name": "Rudy Hackett",
+                        "checking": 56305325,
+                        "routing": 27537298
+                    },
+                    {
+                        "name": "Denise Corkery",
+                        "checking": 90846626,
+                        "routing": 84234984
+                    }
+                ]
+      tags:
+        - payments/{account Number}
+        - payees
+    parameters:
+      - name: accountNumber
+        in: path
+        required: true
+        description: '(Required) '
+        schema:
+          type: string
+        example: do pariatur fugiat esse
+  /payments/{accountNumber}/payees/add:
+    post:
+      summary: Add
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payeeId:
+                    type: string
+              example:
+                payeeId: 144826f8-43cf-4c78-a604-9f53fccec819
+      tags:
+        - payments/{account Number}
+        - payees
+    parameters:
+      - name: accountNumber
+        in: path
+        required: true
+        description: '(Required) '
+        schema:
+          type: string
+        example: do pariatur fugiat esse
+  /payments/{accountNumber}/limits:
+    get:
+      summary: Current
+      responses:
+        '500':
+          description: Untitled Example
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  daily:
+                    type: integer
+              example:
+                daily: 30000
+      tags:
+        - payments/{account Number}
+        - limits
+    parameters:
+      - name: accountNumber
+        in: path
+        required: true
+        description: '(Required) '
+        schema:
+          type: string
+        example: do pariatur fugiat esse
+    put:
+      summary: Update
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+              example:
+                status: success
+      tags:
+        - payments/{account Number}
+        - limits
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                daily:
+                  type: integer
+            example:
+              daily: 30000
+  /payments/{accountNumber}/transfer:
+    post:
+      summary: Transfer
+      responses:
+        '500':
+          description: Untitled Example
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transaction:
+                    type: string
+              example:
+                transaction: complete
+      tags:
+        - payments/{account Number}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                payeeId:
+                  type: string
+                amount:
+                  type: string
+                reference:
+                  type: string
+                date:
+                  type: string
+                  format: style
+            example:
+              payeeId: eea58966-aff3-4631-aefe-a6247b4be10d
+              amount: '184.92'
+              reference: Aut id aliquid.
+              date: Mon Nov 01 2021 23:21:49 GMT-0400 (Eastern Daylight Time)
+    parameters:
+      - name: accountNumber
+        in: path
+        required: true
+        description: '(Required) '
+        schema:
+          type: string
+        example: do pariatur fugiat esse
+  /create:
+    post:
+      summary: New user
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Powered-By:
+              schema:
+                type: string
+            Content-Length:
+              schema:
+                type: string
+            ETag:
+              schema:
+                type: string
+            Date:
+              schema:
+                type: string
+            Connection:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  firstName:
+                    type: string
+                  lastName:
+                    type: string
+                  id:
+                    type: string
+              example:
+                status: success
+                firstName: Ben
+                lastName: Smith
+                id: 0729d37c-ef9f-4ffa-8f71-a6eedf1f95b7
+      description: >-
+        Creates a new user in the system. The user will be assigned an ID
+        automatically. This can be found in the response.
+  /get:
+    get:
+      summary: Get all users
+      parameters:
+        - name: all
+          in: query
+          description: '(Required) '
+          schema:
+            type: boolean
+          example: 'true'
+        - name: key
+          in: header
+          description: '(Required) '
+          schema:
+            type: string
+          example: '{{key}}'
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Powered-By:
+              schema:
+                type: string
+            Content-Length:
+              schema:
+                type: string
+            ETag:
+              schema:
+                type: string
+            Date:
+              schema:
+                type: string
+            Connection:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+              example:
+                - status: success
+                - firstName: Ben
+                  lastName: Smith
+                  id: 0729d37c-ef9f-4ffa-8f71-a6eedf1f95b7
+      description: Get all users in the system.
+  /update:
+    put:
+      summary: Update user
+      parameters:
+        - name: id
+          in: query
+          description: (Required) The user's ID (required)
+          schema:
+            type: string
+          example: '{{id}}'
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Powered-By:
+              schema:
+                type: string
+            Content-Length:
+              schema:
+                type: string
+            ETag:
+              schema:
+                type: string
+            Date:
+              schema:
+                type: string
+            Connection:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  firstName:
+                    type: string
+                  lastName:
+                    type: string
+                  id:
+                    type: string
+              example:
+                status: success
+                firstName: Benjamin
+                lastName: Smith
+                id: 0729d37c-ef9f-4ffa-8f71-a6eedf1f95b7
+      description: >-
+        Send the keys that you'd like to update, this can be one or more of
+        `firstName`, `lastName` and `password`.
+  /delete:
+    delete:
+      summary: Delete user
+      parameters:
+        - name: id
+          in: query
+          description: (Required) The user's ID
+          schema:
+            type: string
+          example: '{{id}}'
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Powered-By:
+              schema:
+                type: string
+            Content-Length:
+              schema:
+                type: string
+            ETag:
+              schema:
+                type: string
+            Date:
+              schema:
+                type: string
+            Connection:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  id:
+                    type: string
+              example:
+                status: success
+                id: 0729d37c-ef9f-4ffa-8f71-a6eedf1f95b7
+      description: Deletes a user from the system by `id`.
