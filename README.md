@@ -1,3 +1,42 @@
+## Local API implementation
+
+A Node.js/Express implementation for `index.yaml` now exists under `app/`.
+
+### Run locally
+
+```bash
+npm install
+npm start
+```
+
+The server runs on `http://localhost:3001` by default.
+
+### User Manager UI
+
+Open `http://localhost:3001/` to use the browser-based User Manager dashboard.
+
+### Implemented endpoints
+
+- `GET /accounts/{accountNumber}/statement/latest`
+- `GET /accounts/{accountNumber}/statement/date`
+- `GET /accounts/{accountNumber}/overview`
+- `POST /accounts/create`
+- `GET /payments/{accountNumber}/payees`
+- `POST /payments/{accountNumber}/payees/add`
+- `GET /payments/{accountNumber}/limits`
+- `PUT /payments/{accountNumber}/limits`
+- `POST /payments/{accountNumber}/transfer`
+- `POST /create`
+- `GET /get`
+- `PUT /update`
+- `PATCH /update`
+- `DELETE /delete`
+
+### Notes
+
+- The service uses an in-memory data store (`app/services/data/store.js`).
+- Some payments endpoints intentionally return HTTP `500` with example payloads because that is how they are defined in `index.yaml`.
+
 ## CI: Postman collection tests
 
 This repo runs the Postman collection **NOVA New User Onboarding** on every `push` and `pull_request` using Postman CLI.

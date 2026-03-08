@@ -1,0 +1,17 @@
+{
+  "name": "user-services-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Express implementation for the OpenAPI contract in user-services/index.yaml",
+  "main": "app/server.js",
+  "scripts": {
+    "start": "node app/server.js",
+    "dev": "NODE_ENV=development node app/server.js"
+  },
+  "dependencies": {
+    "cookie-parser": "1.4.7",
+    "cors": "2.8.5",
+    "express": "4.21.2",
+    "morgan": "1.10.0"
+  }
+}

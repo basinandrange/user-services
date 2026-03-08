@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nova Users - User Manager</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <i class="fas fa-users-gear"></i>
+        <span>Nova Users</span>
+      </div>
+      <div class="nav-links">
+        <a href="#" class="nav-link active" data-view="dashboard">
+          <i class="fas fa-chart-line"></i> <span class="nav-text">Dashboard</span>
+        </a>
+        <a href="#" class="nav-link" data-view="users">
+          <i class="fas fa-user-group"></i> <span class="nav-text">Users</span>
+        </a>
+        <a href="#" class="nav-link" data-view="create-user">
+          <i class="fas fa-user-plus"></i> <span class="nav-text">Create User</span>
+        </a>
+        <a href="#" class="nav-link" data-view="settings">
+          <i class="fas fa-cog"></i> <span class="nav-text">Settings</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-container">
+    <div id="login-view" class="view-container active">
+      <div class="login-card">
+        <h1 class="login-title">
+          <i class="fas fa-shield-heart"></i>
+          Connect to User Manager API
+        </h1>
+        <p class="login-subtitle">Set your API endpoint and load users to start managing records.</p>
+
+        <form id="connect-form">
+          <div class="form-group">
+            <label for="connect-base-url">API Base URL</label>
+            <input
+              type="url"
+              id="connect-base-url"
+              placeholder="http://localhost:3001"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="connect-api-key">API Key Header (optional)</label>
+            <input
+              type="text"
+              id="connect-api-key"
+              placeholder="local-dev"
+              autocomplete="off"
+            >
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-plug"></i>
+            Connect
+          </button>
+        </form>
+
+        <div class="demo-hint">
+          <small>Default local endpoint: <code>http://localhost:3001</code></small>
+        </div>
+        <div id="connect-message" class="update-message"></div>
+      </div>
+    </div>
+
+    <div id="dashboard-view" class="view-container">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">User Dashboard</h1>
+          <p class="page-subtitle">Overview and quick actions for your user data.</p>
+        </div>
+        <div class="page-header-actions">
+          <button class="btn btn-outline" id="refresh-dashboard-btn">
+            <i class="fas fa-rotate"></i>
+            Refresh
+          </button>
+          <button class="btn btn-secondary" id="logout-btn">
+            <i class="fas fa-sign-out-alt"></i>
+            Disconnect
+          </button>
+        </div>
+      </div>
+
+      <div class="cards-grid">
+        <div class="card balance-card">
+          <div class="card-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="card-content">
+            <p class="card-label">Total Users</p>
+            <h2 class="card-value" id="total-users-card">0</h2>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-icon info">
+            <i class="fas fa-user-check"></i>
+          </div>
+          <div class="card-content">
+            <p class="card-label">Selected User</p>
+            <h2 class="card-value account-type" id="selected-user-card">None</h2>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-icon income">
+            <i class="fas fa-circle-check"></i>
+          </div>
+          <div class="card-content">
+            <p class="card-label">API Status</p>
+            <h2 class="card-value account-type" id="api-status-card">Not tested</h2>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-icon expense">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <div class="card-content">
+            <p class="card-label">Last Action</p>
+            <h2 class="card-value account-type" id="last-action-card">None</h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="bank-statement-container">
+        <div class="statement-header">
+          <h2>Recent Users</h2>
+          <button class="btn btn-outline" id="go-to-users-btn">
+            <i class="fas fa-arrow-right"></i>
+            Manage Users
+          </button>
+        </div>
+
+        <div class="transactions-table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>User ID</th>
+              </tr>
+            </thead>
+            <tbody id="recent-users-body">
+              <tr>
+                <td colspan="3" class="no-data">No users loaded yet</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="users-view" class="view-container">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Manage Users</h1>
+          <p class="page-subtitle">Search, update, copy, and delete users.</p>
+        </div>
+        <button class="btn btn-outline" id="refresh-users-btn">
+          <i class="fas fa-rotate"></i>
+          Refresh List
+        </button>
+      </div>
+
+      <div class="users-layout">
+        <div class="bank-statement-container">
+          <div class="statement-header">
+            <h2>User Directory</h2>
+            <div class="inline-tools">
+              <input type="search" id="user-search" placeholder="Search by name or ID">
+            </div>
+          </div>
+
+          <div class="transactions-table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>User ID</th>
+                </tr>
+              </thead>
+              <tbody id="users-body">
+                <tr>
+                  <td colspan="3" class="no-data">No users found</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="bank-statement-container">
+          <div class="statement-header">
+            <h2>Selected User</h2>
+            <span id="selected-user-badge" class="status-pill">None</span>
+          </div>
+
+          <form id="update-user-form" class="account-edit-form">
+            <div class="form-group">
+              <label for="update-first-name">First Name</label>
+              <input type="text" id="update-first-name" name="firstName" autocomplete="given-name">
+            </div>
+            <div class="form-group">
+              <label for="update-last-name">Last Name</label>
+              <input type="text" id="update-last-name" name="lastName" autocomplete="family-name">
+            </div>
+            <div class="form-group">
+              <label for="update-password">Password (optional)</label>
+              <input type="password" id="update-password" name="password" autocomplete="new-password">
+            </div>
+
+            <div class="form-actions compact">
+              <button type="submit" class="btn btn-primary" id="save-user-btn">
+                <i class="fas fa-save"></i>
+                Save
+              </button>
+              <button type="button" class="btn btn-secondary" id="copy-user-btn">
+                <i class="fas fa-copy"></i>
+                Copy
+              </button>
+              <button type="button" class="btn btn-danger" id="delete-user-btn">
+                <i class="fas fa-trash"></i>
+                Delete
+              </button>
+            </div>
+          </form>
+
+          <div id="users-message" class="update-message"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="create-user-view" class="view-container">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Create New User</h1>
+          <p class="page-subtitle">Add a new user to the system and jump straight to editing.</p>
+        </div>
+      </div>
+
+      <div class="bank-statement-container">
+        <form id="create-user-form" class="account-edit-form">
+          <div class="form-grid one-column">
+            <div class="form-section">
+              <h3><i class="fas fa-id-card"></i> User Details</h3>
+
+              <div class="form-group">
+                <label for="new-first-name">First Name <span class="required">*</span></label>
+                <input type="text" id="new-first-name" name="firstName" required>
+              </div>
+
+              <div class="form-group">
+                <label for="new-last-name">Last Name <span class="required">*</span></label>
+                <input type="text" id="new-last-name" name="lastName" required>
+              </div>
+
+              <div class="form-group">
+                <label for="new-password">Password (optional)</label>
+                <input type="password" id="new-password" name="password" autocomplete="new-password">
+              </div>
+
+              <div class="form-help-text">
+                <i class="fas fa-info-circle"></i>
+                <p>The API returns a generated UUID for every new user.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-user-plus"></i>
+              Create User
+            </button>
+            <button type="reset" class="btn btn-secondary">
+              <i class="fas fa-undo"></i>
+              Clear Form
+            </button>
+          </div>
+        </form>
+
+        <div id="create-user-message" class="update-message"></div>
+
+        <div id="user-created-result" class="bank-statement-container nested-result" style="display: none;">
+          <div class="statement-header">
+            <h2><i class="fas fa-check-circle"></i> User Created</h2>
+          </div>
+          <div class="account-info-grid">
+            <div class="info-section">
+              <h3><i class="fas fa-user"></i> New User</h3>
+              <div class="info-item">
+                <span class="info-label">First Name:</span>
+                <span class="info-value" id="created-first-name">-</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Last Name:</span>
+                <span class="info-value" id="created-last-name">-</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">User ID:</span>
+                <span class="info-value mono" id="created-user-id">-</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions" style="margin-top: 20px;">
+            <button class="btn btn-primary" id="use-created-user-btn" type="button">
+              <i class="fas fa-arrow-right"></i>
+              Edit This User
+            </button>
+            <button class="btn btn-outline" id="create-another-user-btn" type="button">
+              <i class="fas fa-plus"></i>
+              Create Another
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="settings-view" class="view-container">
+      <div class="page-header">
+        <h1 class="page-title">Settings</h1>
+        <p class="page-subtitle">Configure API endpoint and request headers.</p>
+      </div>
+
+      <div class="bank-statement-container">
+        <div class="statement-header">
+          <h2><i class="fas fa-server"></i> API Configuration</h2>
+        </div>
+
+        <div class="settings-content">
+          <p class="settings-description">
+            Update the API base URL and optional API key header used by this UI. Changes are saved in local storage.
+          </p>
+
+          <form id="settings-form" class="settings-form">
+            <div class="form-group">
+              <label for="api-base-url"><i class="fas fa-link"></i> API Base URL</label>
+              <input type="url" id="api-base-url" name="apiBaseUrl" required>
+              <small class="form-help">Example: http://localhost:3001</small>
+            </div>
+
+            <div class="form-group">
+              <label for="api-key-header"><i class="fas fa-key"></i> API Key Header (optional)</label>
+              <input type="text" id="api-key-header" name="apiKeyHeader" placeholder="local-dev">
+              <small class="form-help">If provided, sent as `key` header on requests.</small>
+            </div>
+
+            <div class="settings-info">
+              <div class="info-box">
+                <h4><i class="fas fa-info-circle"></i> Current Configuration</h4>
+                <div class="info-item">
+                  <span class="info-label">Base URL:</span>
+                  <span class="info-value" id="current-base-url">-</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">Key Header:</span>
+                  <span class="info-value" id="current-key-header">(none)</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">Status:</span>
+                  <span class="info-value" id="api-status">
+                    <i class="fas fa-circle status-indicator"></i>
+                    <span id="api-status-text">Not tested</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn-outline" id="test-connection-btn">
+                <i class="fas fa-vial"></i>
+                Test Connection
+              </button>
+              <button type="button" class="btn btn-secondary" id="reset-settings-btn">
+                <i class="fas fa-undo"></i>
+                Reset Defaults
+              </button>
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i>
+                Save Settings
+              </button>
+            </div>
+          </form>
+
+          <div id="settings-message" class="update-message"></div>
+        </div>
+
+        <div class="settings-presets">
+          <h3><i class="fas fa-list"></i> Quick Presets</h3>
+          <p class="settings-description">Select a preset URL and save.</p>
+
+          <div class="preset-buttons">
+            <button class="preset-btn" data-url="http://localhost:3001" type="button">
+              <i class="fas fa-laptop-code"></i>
+              <span class="preset-name">Local User API</span>
+              <span class="preset-url">http://localhost:3001</span>
+            </button>
+            <button class="preset-btn" data-url="http://localhost:8080" type="button">
+              <i class="fas fa-laptop-code"></i>
+              <span class="preset-name">Local Proxy</span>
+              <span class="preset-url">http://localhost:8080</span>
+            </button>
+            <button class="preset-btn" data-url="https://api-staging.example.com" type="button">
+              <i class="fas fa-flask"></i>
+              <span class="preset-name">Staging</span>
+              <span class="preset-url">https://api-staging.example.com</span>
+            </button>
+            <button class="preset-btn" data-url="https://api.example.com" type="button">
+              <i class="fas fa-cloud"></i>
+              <span class="preset-name">Production</span>
+              <span class="preset-url">https://api.example.com</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="loading-overlay" class="loading-overlay">
+    <div class="loading-spinner">
+      <i class="fas fa-circle-notch fa-spin"></i>
+      <p>Working...</p>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

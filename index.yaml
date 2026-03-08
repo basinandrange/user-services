@@ -5,6 +5,7 @@ info:
   description: ''
 servers:
   - url: https://1af308f9-67f8-48f5-98ca-a8fd97bcaae8.mock.pstmn.io
+
 paths:
   /accounts/{accountNumber}/statement/latest:
     get:
