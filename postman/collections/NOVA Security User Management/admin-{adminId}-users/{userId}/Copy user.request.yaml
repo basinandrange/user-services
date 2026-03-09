@@ -1,5 +1,0 @@
-$kind: http-request
-name: Copy user
-url: "{{baseUrl}}/admin/{{adminId}}/users/{{userId}}"
-method: PATCH
-order: 3336399682011913

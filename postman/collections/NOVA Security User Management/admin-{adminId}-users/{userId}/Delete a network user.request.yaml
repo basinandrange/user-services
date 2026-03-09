@@ -1,8 +1,0 @@
-$kind: http-request
-url: "{{baseUrl}}/admin/:adminId/users/:userId"
-method: DELETE
-pathVariables:
-  adminId: ""
-  userId: ""
-examples: ./.resources/Delete a network user.resources/examples
-order: 1000

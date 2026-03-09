@@ -1,6 +1,0 @@
-name: Prod
-values:
-  - key: baseUrl
-    value: https://63bceab4-ed9f-4798-a79f-ea43eca1db74.mock.pstmn.io
-    enabled: true
-color: null

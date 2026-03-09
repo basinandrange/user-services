@@ -1,5 +1,0 @@
-$kind: collection
-name: admin/{adminId}/users
-description: In this folder, you'll find all of the calls available to
-  administrators that have to do with getting and managing users.
-order: 1000
