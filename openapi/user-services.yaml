@@ -1,0 +1,151 @@
+openapi: 3.0.3
+info:
+  title: user-services API
+  version: 1.0.0
+  description: >
+    Express implementation of the onboarding and management contract for user-services.
+  contact:
+    name: basin-and-range
+    url: https://github.com/basin-and-range/user-services
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+paths:
+  /users:
+    get:
+      summary: Retrieve all users in the enrollment store
+      tags:
+        - users
+      responses:
+        '200':
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      summary: Create a new user record
+      tags:
+        - users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+            examples:
+              payload:
+                value:
+                  firstName: Alex
+                  lastName: Rivera
+                  email: alex.rivera@example.com
+                  locale: en-US
+      responses:
+        '201':
+          description: The created user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /users/{userId}:
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        description: Unique identifier for the user
+        schema:
+          type: string
+    patch:
+      summary: Update a user record
+      tags:
+        - users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+      responses:
+        '200':
+          description: The updated user record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    delete:
+      summary: Delete a user record
+      tags:
+        - users
+      responses:
+        '204':
+          description: User deleted successfully
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - id
+        - firstName
+        - lastName
+        - email
+      properties:
+        id:
+          type: string
+          description: Stable identifier for the user
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        role:
+          type: string
+          description: Assigned role within the onboarding system
+        status:
+          type: string
+        locale:
+          type: string
+          description: Preferred locale for the user
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    UserCreate:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - email
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        role:
+          type: string
+        locale:
+          type: string
+    UserUpdate:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        role:
+          type: string
+        status:
+          type: string
+        locale:
+          type: string
