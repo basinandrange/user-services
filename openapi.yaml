@@ -1,0 +1,378 @@
+openapi: 3.0.3
+info:
+  title: user-services API
+  version: 1.0.0
+  description: |
+    Lightweight user services API implemented with Express. Includes user profiles, account summaries, and payments.
+servers:
+  - url: http://localhost:3000
+paths:
+  /users:
+    get:
+      summary: List all users
+      operationId: listUsers
+      parameters:
+        - name: status
+          in: query
+          description: Filter users by status
+          schema:
+            type: string
+            enum: [active, inactive, suspended]
+        - name: limit
+          in: query
+          description: Maximum number of users to return
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: Array of user records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      summary: Create a new user profile
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewUser'
+      responses:
+        '201':
+          description: User successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid user payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /users/{userId}:
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        description: Unique identifier of the user
+        schema:
+          type: string
+    get:
+      summary: Retrieve a single user profile
+      operationId: getUser
+      responses:
+        '200':
+          description: User profile returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      summary: Update an existing user
+      operationId: updateUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+      responses:
+        '200':
+          description: Updated user profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      summary: Delete a user profile
+      operationId: deleteUser
+      responses:
+        '204':
+          description: User deleted
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /accounts:
+    get:
+      summary: List accounts with optional user filter
+      operationId: listAccounts
+      parameters:
+        - name: userId
+          in: query
+          description: Filter accounts belonging to a user
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: Filter accounts by status
+          schema:
+            type: string
+            enum: [open, closed, pending]
+      responses:
+        '200':
+          description: Array of account summaries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+  /accounts/{accountId}:
+    parameters:
+      - name: accountId
+        in: path
+        required: true
+        description: Unique account identifier
+        schema:
+          type: string
+    get:
+      summary: Retrieve a single account record
+      operationId: getAccount
+      responses:
+        '200':
+          description: Account returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '404':
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /payments:
+    get:
+      summary: List recent payments
+      operationId: listPayments
+      parameters:
+        - name: userId
+          in: query
+          description: Filter payments by user
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: Maximum number of payments to return
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: Array of payment records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payment'
+    post:
+      summary: Create a payment instruction
+      operationId: createPayment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPayment'
+      responses:
+        '201':
+          description: Payment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '400':
+          description: Invalid payment payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /payments/{paymentId}:
+    parameters:
+      - name: paymentId
+        in: path
+        required: true
+        description: Unique identifier for the payment
+        schema:
+          type: string
+    get:
+      summary: Retrieve payment details
+      operationId: getPayment
+      responses:
+        '200':
+          description: Payment record returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '404':
+          description: Payment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    User:
+      type: object
+      required: [id, name, email, status, createdAt]
+      properties:
+        id:
+          type: string
+          description: UUID for the user
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        status:
+          type: string
+          enum: [active, inactive, suspended]
+        createdAt:
+          type: string
+          format: date-time
+        lastLogin:
+          type: string
+          format: date-time
+          nullable: true
+    NewUser:
+      type: object
+      required: [name, email]
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 8
+        invitationCode:
+          type: string
+          nullable: true
+    UserUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        status:
+          type: string
+          enum: [active, inactive, suspended]
+    Account:
+      type: object
+      required: [id, userId, type, balance, currency, status]
+      properties:
+        id:
+          type: string
+          description: Unique account identifier
+        userId:
+          type: string
+        type:
+          type: string
+          enum: [checking, savings, credit]
+        balance:
+          type: number
+          format: double
+        currency:
+          type: string
+          example: USD
+        status:
+          type: string
+          enum: [open, closed, pending]
+        openedAt:
+          type: string
+          format: date-time
+        closedAt:
+          type: string
+          format: date-time
+          nullable: true
+    Payment:
+      type: object
+      required: [id, amount, currency, fromAccountId, toAccountId, status, createdAt]
+      properties:
+        id:
+          type: string
+        amount:
+          type: number
+          format: double
+        currency:
+          type: string
+          example: USD
+        fromAccountId:
+          type: string
+        toAccountId:
+          type: string
+        status:
+          type: string
+          enum: [pending, completed, failed]
+        createdAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+          nullable: true
+        reference:
+          type: string
+          nullable: true
+    NewPayment:
+      type: object
+      required: [amount, currency, fromAccountId, toAccountId]
+      properties:
+        amount:
+          type: number
+          format: double
+        currency:
+          type: string
+        fromAccountId:
+          type: string
+        toAccountId:
+          type: string
+        reference:
+          type: string
+          nullable: true
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+    ErrorResponse:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: string
