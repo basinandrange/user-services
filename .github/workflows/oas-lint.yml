@@ -1,0 +1,19 @@
+name: OAS Lint
+on:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  spectral:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install Spectral CLI
+        run: |
+          npm install -g @stoplight/spectral-cli
+      - name: Install OWASP ruleset
+        run: |
+          npm install @stoplight/spectral-owasp-ruleset
+      - name: Run Spectral lint
+        run: |
+          spectral lint openapi.yaml
