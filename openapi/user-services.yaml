@@ -1,0 +1,187 @@
+openapi: 3.0.3
+info:
+  title: user-services API
+  version: 1.0.0
+  description: |
+    REST surface for the user-services Express backend that manages the onboarding lifecycle.
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+paths:
+  /users:
+    get:
+      summary: Retrieve all users
+      operationId: listUsers
+      description: |
+        Returns every user known to the service and accepts optional filters.
+      parameters:
+        - name: status
+          in: query
+          description: Filter by lifecycle status.
+          required: false
+          schema:
+            type: string
+            example: active
+        - name: email
+          in: query
+          description: Limit results to a specific email address.
+          required: false
+          schema:
+            type: string
+            format: email
+            example: alice@example.com
+      responses:
+        '200':
+          description: A list of users.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      summary: Create a new user
+      operationId: createUser
+      description: Persist a new user record in the store.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewUser'
+      responses:
+        '201':
+          description: User created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /users/{userId}:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    put:
+      summary: Update an existing user
+      operationId: updateUser
+      description: Update the provided fields on the user identified by the path parameter.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewUser'
+      responses:
+        '200':
+          description: The updated user record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      summary: Delete a user
+      operationId: deleteUser
+      description: Remove the user identified by userId from the store.
+      responses:
+        '204':
+          description: User removed successfully. No content is returned.
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  parameters:
+    UserId:
+      name: userId
+      in: path
+      description: Unique identifier assigned to the user.
+      required: true
+      schema:
+        type: string
+        format: uuid
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        givenName:
+          type: string
+        familyName:
+          type: string
+        email:
+          type: string
+          format: email
+        status:
+          type: string
+          description: Lifecycle status of the user record.
+          example: active
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - givenName
+        - familyName
+        - email
+        - status
+    NewUser:
+      type: object
+      properties:
+        givenName:
+          type: string
+        familyName:
+          type: string
+        email:
+          type: string
+          format: email
+        status:
+          type: string
+          description: Lifecycle status to assign when the user is created.
+          example: active
+      required:
+        - givenName
+        - familyName
+        - email
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Machine readable error code.
+        message:
+          type: string
+          description: Human readable error message.
+      required:
+        - code
+        - message
+  responses:
+    BadRequest:
+      description: Input validation failed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource could not be located.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: Unexpected failure while fulfilling the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
