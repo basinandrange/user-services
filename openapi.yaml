@@ -1,0 +1,445 @@
+openapi: 3.1.0
+info:
+  title: user-services API
+  version: 1.0.0
+  description: |
+    Express implementation of the user-services API that manages users, accounts, and payments.
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+tags:
+  - name: Users
+    description: Operations related to user management
+  - name: Accounts
+    description: Operations related to account management
+  - name: Payments
+    description: Operations related to payments
+paths:
+  /users:
+    get:
+      summary: List all users
+      tags:
+        - Users
+      responses:
+        200:
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        default:
+          $ref: '#/components/responses/Error'
+    post:
+      summary: Create a new user
+      tags:
+        - Users
+      requestBody:
+        description: Details for the new user
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewUser'
+      responses:
+        201:
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          $ref: '#/components/responses/Error'
+  /users/{userId}:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    get:
+      summary: Retrieve a single user by ID
+      tags:
+        - Users
+      responses:
+        200:
+          description: The requested user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        404:
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          $ref: '#/components/responses/Error'
+    put:
+      summary: Update an existing user
+      tags:
+        - Users
+      requestBody:
+        description: Updated user details
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+      responses:
+        200:
+          description: Updated user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          $ref: '#/components/responses/Error'
+    delete:
+      summary: Remove a user
+      tags:
+        - Users
+      responses:
+        204:
+          description: User removed successfully
+        default:
+          $ref: '#/components/responses/Error'
+  /accounts:
+    get:
+      summary: List all accounts
+      tags:
+        - Accounts
+      responses:
+        200:
+          description: Array of accounts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+        default:
+          $ref: '#/components/responses/Error'
+    post:
+      summary: Create a new account
+      tags:
+        - Accounts
+      requestBody:
+        description: Data for the new account
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewAccount'
+      responses:
+        201:
+          description: Account created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        default:
+          $ref: '#/components/responses/Error'
+  /accounts/{accountId}:
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+    get:
+      summary: Get account details
+      tags:
+        - Accounts
+      responses:
+        200:
+          description: Account details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        404:
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          $ref: '#/components/responses/Error'
+    put:
+      summary: Update an account
+      tags:
+        - Accounts
+      requestBody:
+        description: Updated account information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountUpdate'
+      responses:
+        200:
+          description: Account updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        default:
+          $ref: '#/components/responses/Error'
+    delete:
+      summary: Delete an account
+      tags:
+        - Accounts
+      responses:
+        204:
+          description: Account deleted successfully
+        default:
+          $ref: '#/components/responses/Error'
+  /payments:
+    get:
+      summary: List recent payments
+      tags:
+        - Payments
+      responses:
+        200:
+          description: Array of payments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payment'
+        default:
+          $ref: '#/components/responses/Error'
+    post:
+      summary: Create a payment
+      tags:
+        - Payments
+      requestBody:
+        description: Payment details
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPayment'
+      responses:
+        201:
+          description: Payment initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        default:
+          $ref: '#/components/responses/Error'
+  /payments/{paymentId}:
+    parameters:
+      - $ref: '#/components/parameters/PaymentId'
+    get:
+      summary: Fetch a payment by its ID
+      tags:
+        - Payments
+      responses:
+        200:
+          description: Payment details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        404:
+          description: Payment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          $ref: '#/components/responses/Error'
+components:
+  parameters:
+    UserId:
+      name: userId
+      in: path
+      required: true
+      description: Unique identifier of the user
+      schema:
+        type: string
+    AccountId:
+      name: accountId
+      in: path
+      required: true
+      description: Unique identifier of the account
+      schema:
+        type: string
+    PaymentId:
+      name: paymentId
+      in: path
+      required: true
+      description: Unique identifier of the payment
+      schema:
+        type: string
+  responses:
+    Error:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        createdAt:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [active, inactive]
+      required:
+        - id
+        - firstName
+        - lastName
+        - email
+    NewUser:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+      required:
+        - firstName
+        - lastName
+        - email
+    UserUpdate:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        status:
+          type: string
+          enum: [active, inactive]
+    Account:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          example: checking
+        balance:
+          type: number
+          format: double
+        currency:
+          type: string
+          example: USD
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - userId
+        - name
+        - balance
+        - currency
+    NewAccount:
+      type: object
+      properties:
+        userId:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+        initialBalance:
+          type: number
+          format: double
+        currency:
+          type: string
+      required:
+        - userId
+        - name
+        - currency
+    AccountUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        balance:
+          type: number
+          format: double
+        currency:
+          type: string
+    Payment:
+      type: object
+      properties:
+        id:
+          type: string
+        payerId:
+          type: string
+        payeeId:
+          type: string
+        amount:
+          type: number
+          format: double
+        currency:
+          type: string
+        status:
+          type: string
+          enum: [pending, completed, failed]
+        initiatedAt:
+          type: string
+          format: date-time
+        description:
+          type: string
+      required:
+        - id
+        - payerId
+        - payeeId
+        - amount
+        - currency
+        - status
+    NewPayment:
+      type: object
+      properties:
+        payerId:
+          type: string
+        payeeId:
+          type: string
+        amount:
+          type: number
+          format: double
+        currency:
+          type: string
+        description:
+          type: string
+      required:
+        - payerId
+        - payeeId
+        - amount
+        - currency
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message
